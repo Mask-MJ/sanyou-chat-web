@@ -83,7 +83,7 @@ let api: ChatGPTAPI | ChatGPTUnofficialProxyAPI
         options.apiBaseUrl = `${OPENAI_API_BASE_URL}/v1`
     }
 		console.log(options)
-    setupProxy(options)
+    setupProxy(options as any)
 
     api = new ChatGPTAPI({ ...options })
     apiModel = 'ChatGPTAPI'
@@ -96,7 +96,7 @@ let api: ChatGPTAPI | ChatGPTUnofficialProxyAPI
       debug: !disableDebug,
     }
 
-    setupProxy(options)
+    setupProxy(options as any)
 
     api = new ChatGPTUnofficialProxyAPI({ ...options })
     apiModel = 'ChatGPTUnofficialProxyAPI'
