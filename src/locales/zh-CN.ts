@@ -29,10 +29,10 @@ export default {
     stopResponding: '停止响应',
   },
   chat: {
-    newChatButton: '新建聊天',
+    newChatButton: '开启新对话',
     newChatTitle: '新建聊天',
-    placeholder: '来说点什么吧...（Shift + Enter = 换行）',
-    placeholderMobile: '来说点什么...',
+    placeholder: '给 deepseek 发送消息（Shift + Enter = 换行）',
+    placeholderMobile: '给deepseek发送消息',
     copy: '复制',
     copied: '复制成功',
     copyCode: '复制代码',

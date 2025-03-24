@@ -4,7 +4,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import type { UploadFileInfo } from 'naive-ui'
-import { NAutoComplete, NButton, NInput, NUpload, useDialog, useMessage } from 'naive-ui'
+import { NAutoComplete, NButton, NInput, NPopover, NUpload, useDialog, useMessage } from 'naive-ui'
 import { toPng } from 'html-to-image'
 import { UploadOutlined } from '@vicons/antd'
 import type { AxiosProgressEvent } from 'axios'
@@ -191,7 +191,6 @@ async function onConversation() {
             chunk = responseText.substring(lastIndex)
           try {
             const data = JSON.parse(chunk)
-            console.log(data)
             updateChat(
               +uuid,
               dataSources.value.length - 1,
@@ -673,7 +672,7 @@ onUnmounted(() => {
       </div>
     </main>
     <footer :class="footerClass">
-      <div class="w-full max-w-screen-xl m-auto">
+      <div class=" m-auto mx-20 min-h-28 rounded-3xl bg-gray-100">
         <div class="flex items-center justify-between space-x-2">
           <!-- <HoverButton v-if="!isMobile" @click="handleClear">
             <span class="text-xl text-[#4f555e] dark:text-white">
@@ -695,6 +694,7 @@ onUnmounted(() => {
               <NInput
                 ref="inputRef"
                 v-model:value="prompt"
+                class="message-input"
                 type="textarea"
                 :placeholder="placeholder"
                 :autosize="{ minRows: 1, maxRows: isMobile ? 4 : 8 }"
@@ -705,23 +705,30 @@ onUnmounted(() => {
               />
             </template>
           </NAutoComplete>
-          <NButton type="primary" :disabled="buttonDisabled" @click="handleSubmit">
-            <template #icon>
-              <span class="dark:text-black">
-                <SvgIcon icon="ri:send-plane-fill" />
-              </span>
+          <NPopover trigger="hover">
+            <template #trigger>
+              <NButton class="!absolute bottom-8 right-28" type="primary" circle :disabled="buttonDisabled" @click="handleSubmit">
+                <template #icon>
+                  <span class="dark:text-black text-white">
+                    <SvgIcon icon="ri:send-plane-fill" />
+                  </span>
+                </template>
+              </NButton>
             </template>
-          </NButton>
+            <span>请输入你的问题</span>
+          </NPopover>
           <NUpload
-            v-if="['3', '4', '5'].includes(menuValue)"
-            class="!w-10"
+            class="!w-10 !absolute bottom-8 right-36"
             action="/chat/knowledge_base/upload_temp_docs"
             name="files"
             :show-file-list="false"
             @before-upload="handleBeforeUpload"
             @finish="handleUploadFinish"
           >
-            <NButton type="primary" :loading="loading">
+            <NButton
+              type="primary" :loading="loading"
+              circle
+            >
               <template #icon>
                 <UploadOutlined />
               </template>
@@ -732,3 +739,24 @@ onUnmounted(() => {
     </footer>
   </div>
 </template>
+
+<style scoped lang="css">
+.message-input {
+width: 100%;
+min-height: 112px;
+border: none !important;
+color: inherit;
+font-size: 1rem;
+padding: 4px;
+background-color: transparent !important;
+}
+.message-input :deep(.n-input__border) {
+display: none !important;
+}
+.message-input.n-input--focus {
+border: none !important;
+}
+.message-input :deep(.n-input__state-border) {
+display: none !important;
+}
+</style>

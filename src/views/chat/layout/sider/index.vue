@@ -1,7 +1,8 @@
 <script setup lang='ts'>
 import type { CSSProperties } from 'vue'
-import { computed, ref, watch } from 'vue'
-import { NButton, NLayoutSider, useDialog } from 'naive-ui'
+import { computed, h, ref, watch } from 'vue'
+import { NButton, NIcon, NLayoutSider, useDialog } from 'naive-ui'
+import { MessageOutlined } from '@vicons/antd'
 import List from './List.vue'
 import { useAppStore, useChatStore, useUserStore } from '@/store'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
@@ -52,7 +53,11 @@ const getMobileClass = computed<CSSProperties>(() => {
   }
   return {}
 })
-
+const renderIcon = () => {
+  return h(NIcon, null, {
+    default: () => h(MessageOutlined),
+  })
+}
 const mobileSafeArea = computed(() => {
   if (isMobile.value) {
     return {
@@ -88,8 +93,13 @@ watch(
   >
     <div class="flex flex-col h-full" :style="mobileSafeArea">
       <main class="flex flex-col flex-1 min-h-0">
-        <div class="py-2 text-center border-b-2">
-          历史记录
+        <div class="py-2 text-center text-3xl font-bold">
+          DeepSeek
+        </div>
+        <div class="p-4 pt-2">
+          <NButton class="!rounded-xl !py-6" type="primary" strong secondary size="large" :render-icon="renderIcon" @click="handleAdd">
+            {{ $t('chat.newChatButton') }}
+          </NButton>
         </div>
         <div class="flex-1 min-h-0 py-4 overflow-hidden">
           <List />
@@ -105,12 +115,8 @@ watch(
           </NButton>
         </div> -->
       </main>
-      <div class="px-4 pt-2">
-        <NButton dashed block @click="handleAdd">
-          {{ $t('chat.newChatButton') }}
-        </NButton>
-      </div>
-      <div class="p-4">
+
+      <div class="p-4 hidden">
         <NButton dashed block @click="handleClearAll">
           清空所有聊天记录
         </NButton>

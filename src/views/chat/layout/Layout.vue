@@ -1,9 +1,8 @@
 <script setup lang='ts'>
 import type { Component } from 'vue'
 import { computed, h } from 'vue'
-import { NIcon, NLayout, NLayoutContent, NMenu } from 'naive-ui'
+import { NIcon, NLayout, NLayoutContent } from 'naive-ui'
 import { useRouter } from 'vue-router'
-import { AimOutlined, AlertOutlined, AuditOutlined, ClusterOutlined, ProjectOutlined, ReadOutlined, ReconciliationOutlined } from '@vicons/antd'
 import Sider from './sider/index.vue'
 import Permission from './Permission.vue'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
@@ -53,54 +52,54 @@ function handleAdd() {
     appStore.setSiderCollapsed(true)
 }
 
-const menuOptions = [
-  {
-    label: '交互问答',
-    key: 'hear-the-wind-sing',
-    icon: renderIcon(ReadOutlined),
-    children: [
-      { label: '通用问答', key: '1', icon: renderIcon(AlertOutlined) },
-      {
-        label: '精准知识问答',
-        key: '2',
-        icon: renderIcon(AimOutlined),
-      },
-      // {
-      //   label: '搜索引擎问答',
-      //   key: '6',
-      //   icon: () => h('i', { class: 'i-ant-design:file-search-outlined' }),
-      // },
-    ],
-  },
-  {
-    label: '辅助工具',
-    key: 'pinball-1973',
-    icon: renderIcon(ProjectOutlined),
-    children: [
-      {
-        label: '辅助阅读专业文章',
-        key: '3',
-        icon: renderIcon(AuditOutlined),
-      },
-      {
-        label: '提炼文章核心内容',
-        key: '4',
-        icon: renderIcon(ClusterOutlined),
-      },
-      {
-        label: '专业文档翻译',
-        key: '5',
-        icon: renderIcon(ReconciliationOutlined),
-      },
-    ],
-  },
-]
+// const menuOptions = [
+//   {
+//     label: '交互问答',
+//     key: 'hear-the-wind-sing',
+//     icon: renderIcon(ReadOutlined),
+//     children: [
+//       { label: '通用问答', key: '1', icon: renderIcon(AlertOutlined) },
+//       {
+//         label: '精准知识问答',
+//         key: '2',
+//         icon: renderIcon(AimOutlined),
+//       },
+//       // {
+//       //   label: '搜索引擎问答',
+//       //   key: '6',
+//       //   icon: () => h('i', { class: 'i-ant-design:file-search-outlined' }),
+//       // },
+//     ],
+//   },
+//   {
+//     label: '辅助工具',
+//     key: 'pinball-1973',
+//     icon: renderIcon(ProjectOutlined),
+//     children: [
+//       {
+//         label: '辅助阅读专业文章',
+//         key: '3',
+//         icon: renderIcon(AuditOutlined),
+//       },
+//       {
+//         label: '提炼文章核心内容',
+//         key: '4',
+//         icon: renderIcon(ClusterOutlined),
+//       },
+//       {
+//         label: '专业文档翻译',
+//         key: '5',
+//         icon: renderIcon(ReconciliationOutlined),
+//       },
+//     ],
+//   },
+// ]
 </script>
 
 <template>
   <div class="h-full flex   dark:bg-[#24272e] text-neutral-900 dark:text-neutral-200">
-    <NMenu :value="menuValue" :options="menuOptions" default-expand-all :indent="16" class="border-r-2 w-52" @update-value="change" />
-    <div class="h-full dark:bg-[#24272e] transition-all flex-1 bg-[#f0f2f5]" :class="[isMobile ? 'p-0' : 'p-4']">
+    <!-- <NMenu :value="menuValue" :options="menuOptions" default-expand-all :indent="16" class="border-r-2 w-52" @update-value="change" /> -->
+    <div class="h-full dark:bg-[#24272e] transition-all flex-1 bg-[#f0f2f5]">
       <div class="h-full overflow-hidden" :class="getMobileClass">
         <NLayout class="z-40 transition" :class="getContainerClass" has-sider>
           <Sider />
