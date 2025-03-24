@@ -67,7 +67,7 @@ export function fetchChatAPIProcess2<T = any>(
     score_threshold: 2,
     history: [],
     stream: false,
-    model: 'autodl-tmp-glm-4-9b-chat',
+    model: 'deepseek-r1-qwen14b',
     temperature: 0.7,
     max_tokens: 0,
     prompt_name: 'default',
@@ -93,7 +93,7 @@ export function fetchChatAPIProcess3<T = any>(
   const data: Record<string, any> = {
     knowledge_id,
     top_k: 3,
-    model_name: 'autodl-tmp-glm-4-9b-chat',
+    model_name: 'deepseek-r1-qwen14b',
     query: params.prompt,
     history: [],
     max_tokens: 0,

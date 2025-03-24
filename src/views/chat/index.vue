@@ -110,18 +110,9 @@ const handleUploadFinish = (e: any) => {
         knowledge_id: result.data.id,
       })
       // chatStore.setDataByUuid({ uuid: props.uuid, pdf: e.file.file, knowledge_id: result.data.id })
-      loading.value = false
-      if (menuValue.value === '4') {
-        // 上传文件后自动回复
-        prompt.value = '请帮我提炼文章内容'
-        handleSubmit()
-      }
-      else if (menuValue.value === '5') {
-        prompt.value = '请帮我翻译该文件'
-        handleSubmit()
-      }
     }
     loading.value = false
+    userStore.setActiveMenu('3')
   }
   // chatStore.setUploadStatus(false)
 }

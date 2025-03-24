@@ -1,18 +1,16 @@
 <script setup lang='ts'>
-import type { Component } from 'vue'
-import { computed, h } from 'vue'
-import { NIcon, NLayout, NLayoutContent } from 'naive-ui'
+import { computed } from 'vue'
+import { NLayout, NLayoutContent } from 'naive-ui'
 import { useRouter } from 'vue-router'
 import Sider from './sider/index.vue'
 import Permission from './Permission.vue'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
-import { useAppStore, useAuthStore, useChatStore, useUserStore } from '@/store'
-import { t } from '@/locales'
+import { useAppStore, useAuthStore, useChatStore } from '@/store'
 // import { useChat } from '@/views/chat/hooks/useChat'
 
 const router = useRouter()
 const appStore = useAppStore()
-const userStore = useUserStore()
+// const userStore = useUserStore()
 const chatStore = useChatStore()
 const authStore = useAuthStore()
 
@@ -36,21 +34,21 @@ const getContainerClass = computed(() => {
     { 'pl-[260px]': !isMobile.value && !collapsed.value },
   ]
 })
-function renderIcon(icon: Component) {
-  return () => h(NIcon, null, { default: () => h(icon) })
-}
-const menuValue = computed(() => userStore.activeMenu)
-const change = (value: string) => {
-  // if (chatStore.uploading) return
-  userStore.setActiveMenu(value)
-  handleAdd()
-}
+// function renderIcon(icon: Component) {
+//   return () => h(NIcon, null, { default: () => h(icon) })
+// }
+// const menuValue = computed(() => userStore.activeMenu)
+// const change = (value: string) => {
+//   // if (chatStore.uploading) return
+//   userStore.setActiveMenu(value)
+//   handleAdd()
+// }
 
-function handleAdd() {
-  chatStore.addHistory({ title: t('chat.newChatTitle'), uuid: Date.now(), isEdit: false, menuValue: userStore.activeMenu })
-  if (isMobile.value)
-    appStore.setSiderCollapsed(true)
-}
+// function handleAdd() {
+//   chatStore.addHistory({ title: t('chat.newChatTitle'), uuid: Date.now(), isEdit: false, menuValue: userStore.activeMenu })
+//   if (isMobile.value)
+//     appStore.setSiderCollapsed(true)
+// }
 
 // const menuOptions = [
 //   {
