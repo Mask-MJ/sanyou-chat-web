@@ -110,6 +110,35 @@ export function fetchChatAPIProcess3<T = any>(
   })
 }
 
+export function fetchChatAPIProcess4<T = any>(
+  params: {
+    prompt: string
+    options?: { conversationId?: string; parentMessageId?: string }
+    signal?: GenericAbortSignal
+    onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void },
+) {
+  const data: Record<string, any> = {
+    model: 'deepseek-r1-qwen14b',
+    temperature: 0.8,
+    stream: true,
+    top_p: 1,
+    presence_penalty: 1,
+    messages: [
+      {
+        role: 'system',
+        content: 'You are ChatGPT, a large language model trained by OpenAI. Follow the user\'s instructions carefully. Respond using markdown.',
+      },
+      { role: 'user', content: params.prompt },
+    ],
+  }
+  return post<T>({
+    url: '/chat/chat/chat/completions',
+    data,
+    signal: params.signal,
+    onDownloadProgress: params.onDownloadProgress,
+  })
+}
+
 export function fetchSession<T>() {
   return post<T>({
     url: '/api/session',

@@ -16,7 +16,7 @@ import HeaderComponent from './components/Header/index.vue'
 import { SvgIcon } from '@/components/common'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { useChatStore, usePromptStore, useUserStore } from '@/store'
-import { fetchChatAPIProcess, fetchChatAPIProcess2, fetchChatAPIProcess3 } from '@/api'
+import { fetchChatAPIProcess4, fetchChatAPIProcess2, fetchChatAPIProcess3 } from '@/api'
 import { t } from '@/locales'
 
 let controller = new AbortController()
@@ -211,7 +211,7 @@ async function onConversation() {
         },
       }
       if (menuValue.value === '1')
-        await fetchChatAPIProcess<Chat.ConversationResponse>(params)
+        await fetchChatAPIProcess4<Chat.ConversationResponse>(params)
 
       if (menuValue.value === '2') {
         params = {
@@ -383,7 +383,7 @@ async function onRegenerate(index: number) {
   try {
     let lastText = ''
     const fetchChatAPIOnce = async () => {
-      await fetchChatAPIProcess<Chat.ConversationResponse>({
+      await fetchChatAPIProcess4<Chat.ConversationResponse>({
         prompt: message,
         options,
         signal: controller.signal,
