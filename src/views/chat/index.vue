@@ -710,7 +710,7 @@ onUnmounted(() => {
           </NPopover>
           <NUpload
             class="!w-10 !absolute bottom-8 right-36"
-            action="/chat/knowledge_base/upload_temp_docs"
+            action="/knowledge_base/upload_temp_docs"
             name="files"
             :show-file-list="false"
             @before-upload="handleBeforeUpload"
