@@ -74,7 +74,7 @@ export function fetchChatAPIProcess2<T = any>(
     return_direct: false,
   }
   return post<T>({
-    url: '/chat/chat/kb_chat',
+    url: '/chat/kb_chat',
     data,
     signal: params.signal,
     onDownloadProgress: params.onDownloadProgress,
@@ -103,7 +103,7 @@ export function fetchChatAPIProcess3<T = any>(
     prompt_name: 'default',
   }
   return post<T>({
-    url: '/chat/chat/file_chat',
+    url: '/chat/file_chat',
     data,
     signal: params.signal,
     onDownloadProgress: params.onDownloadProgress,
