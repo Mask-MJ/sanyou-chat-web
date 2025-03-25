@@ -102,41 +102,41 @@ let api: ChatGPTAPI | ChatGPTUnofficialProxyAPI
   }
 })()
 
-async function chatReplyProcess(options: RequestOptions) {
-  const { message, lastContext, process, systemMessage, temperature, top_p } = options
-  try {
-    let options: SendMessageOptions = { timeoutMs }
+async function chatReplyProcess(options2: RequestOptions) {
+  const { message, lastContext, process, systemMessage, temperature, top_p } = options2
+  // try {
+  let options: SendMessageOptions = { timeoutMs }
 
-    if (apiModel === 'ChatGPTAPI') {
-      if (isNotEmptyString(systemMessage))
-        options.systemMessage = systemMessage
-      options.completionParams = { model, temperature, top_p }
-    }
-
-    if (lastContext != null) {
-      if (apiModel === 'ChatGPTAPI')
-        options.parentMessageId = lastContext.parentMessageId
-      else
-        options = { ...lastContext }
-    }
-
-    const response = await api.sendMessage(message, {
-      ...options,
-      onProgress: (partialResponse) => {
-        process?.(partialResponse)
-      },
-    })
-
-    return sendResponse({ type: 'Success', data: response })
+  if (apiModel === 'ChatGPTAPI') {
+    if (isNotEmptyString(systemMessage))
+      options.systemMessage = systemMessage
+    options.completionParams = { model, temperature, top_p }
   }
-  catch (error: any) {
-    const code = error.statusCode
-    global.console.log(error)
-    if (Reflect.has(ErrorCodeMessage, code))
-      return sendResponse({ type: 'Fail', message: ErrorCodeMessage[code] })
-    return sendResponse({ type: 'Fail', message: error.message ?? 'Please check the back-end console' })
+
+  if (lastContext != null) {
+    if (apiModel === 'ChatGPTAPI')
+      options.parentMessageId = lastContext.parentMessageId
+    else
+      options = { ...lastContext }
   }
+
+  const response = await api.sendMessage(message, {
+    ...options,
+    onProgress: (partialResponse) => {
+      process?.(partialResponse)
+    },
+  })
+
+  return sendResponse({ type: 'Success', data: response })
 }
+// catch (error: any) {
+//   const code = error.statusCode
+//   global.console.log(error)
+//   if (Reflect.has(ErrorCodeMessage, code))
+//     return sendResponse({ type: 'Fail', message: ErrorCodeMessage[code] })
+//   return sendResponse({ type: 'Fail', message: error.message ?? 'Please check the back-end console' })
+// }
+// }
 
 async function chatConfig() {
   const reverseProxy = process.env.API_REVERSE_PROXY ?? '-'
