@@ -120,7 +120,7 @@ export function fetchChatAPIProcess4<T = any>(
   const data: Record<string, any> = {
     model: 'deepseek-r1-qwen14b',
     temperature: 0.8,
-    stream: true,
+    stream: false,
     top_p: 1,
     presence_penalty: 1,
     messages: [

@@ -176,42 +176,40 @@ async function onConversation() {
           const xhr = event.target
           const { responseText } = xhr
           // Always process the final line
-          const lastIndex = responseText.lastIndexOf('\n', responseText.length - 2)
-          let chunk = responseText
-          if (lastIndex !== -1)
-            chunk = responseText.substring(lastIndex)
           try {
-            const data = JSON.parse(chunk)
+            const data = JSON.parse(responseText)
+						const text = (data.choices[0].message.content as string).split('\n</think>\n\n')
             updateChat(
               +uuid,
               dataSources.value.length - 1,
               {
                 dateTime: new Date().toLocaleString(),
-                text: lastText + (data.text ?? ''),
+                text: lastText + (text[1] ?? ''),
                 inversion: false,
                 error: false,
                 loading: true,
-                conversationOptions: { conversationId: data.conversationId, parentMessageId: data.id },
+                conversationOptions: { conversationId: data.id, parentMessageId: data.id },
                 requestOptions: { prompt: message, options: { ...options } },
               },
             )
 
-            if (openLongReply && data.detail.choices[0].finish_reason === 'length') {
-              options.parentMessageId = data.id
-              lastText = data.text
-              message = ''
-              return fetchChatAPIOnce()
-            }
+            // if (openLongReply && data.detail.choices[0].finish_reason === 'length') {
+            //   options.parentMessageId = data.id
+            //   lastText = data.text
+            //   message = ''
+            //   return fetchChatAPIOnce()
+            // }
 
             scrollToBottomIfAtBottom()
           }
           catch (error) {
-            //
           }
         },
       }
       if (menuValue.value === '1')
-        await fetchChatAPIProcess4<Chat.ConversationResponse>(params)
+        await fetchChatAPIProcess4<Chat.ConversationResponse>(params).catch((error) => {
+					console.log('error', error)
+				})
 
       if (menuValue.value === '2') {
         params = {
@@ -300,6 +298,7 @@ async function onConversation() {
     await fetchChatAPIOnce()
   }
   catch (error: any) {
+		console.log('error', error)
     const errorMessage = error?.message ?? t('common.wrong')
 
     if (error.message === 'canceled') {
@@ -350,6 +349,7 @@ async function onConversation() {
 }
 
 async function onRegenerate(index: number) {
+	console.log('onRegenerate')
   if (loading.value)
     return
 
