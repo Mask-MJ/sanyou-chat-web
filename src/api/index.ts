@@ -132,7 +132,7 @@ export function fetchChatAPIProcess4<T = any>(
     ],
   }
   return post<T>({
-    url: '/chat/chat/chat/completions',
+    url: '/chat/chat/completions',
     data,
     signal: params.signal,
     onDownloadProgress: params.onDownloadProgress,
