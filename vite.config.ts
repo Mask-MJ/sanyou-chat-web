@@ -44,7 +44,12 @@ export default defineConfig((env) => {
         '/chat': {
           target: 'http://7d832a6c.r39.cpolar.top',
           changeOrigin: true,
-          rewrite: path => path.replace('/chat/', '/'),
+          // rewrite: path => path.replace('/chat/', '/'),
+        },
+				'/knowledge_base': {
+          target: 'http://7d832a6c.r39.cpolar.top',
+          changeOrigin: true,
+          // rewrite: path => path.replace('/chat/', '/'),
         },
       },
     },

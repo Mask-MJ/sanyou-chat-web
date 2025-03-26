@@ -178,13 +178,13 @@ async function onConversation() {
           // Always process the final line
           try {
             const data = JSON.parse(responseText)
-						const text = (data.choices[0].message.content as string).split('\n</think>\n\n')
+						const text = (data.choices[0].message.content as string)
             updateChat(
               +uuid,
               dataSources.value.length - 1,
               {
                 dateTime: new Date().toLocaleString(),
-                text: lastText + (text[1] ?? ''),
+                text: lastText + (text ?? ''),
                 inversion: false,
                 error: false,
                 loading: true,
@@ -258,7 +258,7 @@ async function onConversation() {
             const xhr = event.target
             const { responseText } = xhr
             try {
-              const chunk = responseText.substring(6)
+              const chunk = responseText.split('data: ')[1]
               const data = JSON.parse(chunk)
               const docs = data.docs.map((item: string) => `\n - ${item}`)
               updateChat(
@@ -349,7 +349,6 @@ async function onConversation() {
 }
 
 async function onRegenerate(index: number) {
-	console.log('onRegenerate')
   if (loading.value)
     return
 
@@ -387,42 +386,33 @@ async function onRegenerate(index: number) {
         prompt: message,
         options,
         signal: controller.signal,
-        onDownloadProgress: ({ event }) => {
+				onDownloadProgress: ({ event }: AxiosProgressEvent) => {
           const xhr = event.target
           const { responseText } = xhr
           // Always process the final line
-          const lastIndex = responseText.lastIndexOf('\n', responseText.length - 2)
-          let chunk = responseText
-          if (lastIndex !== -1)
-            chunk = responseText.substring(lastIndex)
           try {
-            const data = JSON.parse(chunk)
+            const data = JSON.parse(responseText)
+						const text = (data.choices[0].message.content as string)
             updateChat(
               +uuid,
               index,
               {
                 dateTime: new Date().toLocaleString(),
-                text: lastText + (data.text ?? ''),
+                text: lastText + (text ?? ''),
                 inversion: false,
                 error: false,
                 loading: true,
-                conversationOptions: { conversationId: data.conversationId, parentMessageId: data.id },
+                conversationOptions: { conversationId: data.id, parentMessageId: data.id },
                 requestOptions: { prompt: message, options: { ...options } },
               },
             )
-
-            if (openLongReply && data.detail.choices[0].finish_reason === 'length') {
-              options.parentMessageId = data.id
-              lastText = data.text
-              message = ''
-              return fetchChatAPIOnce()
-            }
           }
           catch (error) {
-            //
           }
         },
-      })
+      }).catch((error) => {
+				console.log('error', error)
+			})
       updateChatSome(+uuid, index, { loading: false })
     }
     await fetchChatAPIOnce()
@@ -630,10 +620,11 @@ onUnmounted(() => {
         >
           <div id="image-wrapper" class="relative">
             <template v-if="!dataSources.length">
-              <div class="flex items-center justify-center mt-4 text-center text-neutral-300">
-                <SvgIcon icon="ri:bubble-chart-fill" class="mr-2 text-3xl" />
-                <span>{{ t('chat.newChatTitle') }}</span>
+              <div class="flex items-center justify-center mt-40 text-center mb-4">
+								<img class="w-12 mr-2" src="../../../public/xiaolan.jpg" alt="">
+                <span class="text-2xl font-bold">我是 小兰，很高兴见到你！</span>
               </div>
+							<div class="text-center">我可以帮你写代码、读文件、写作各种创意内容，请把你的任务交给我吧~</div>
             </template>
             <template v-else>
               <div>

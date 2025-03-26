@@ -95,7 +95,7 @@ watch(
     <div class="flex flex-col h-full" :style="mobileSafeArea">
       <main class="flex flex-col flex-1 min-h-0">
         <div class="py-2 text-center text-3xl font-bold">
-          DeepSeek
+          小兰
         </div>
         <div class="p-4 pt-2">
           <NButton class="!rounded-xl !py-6" type="primary" strong secondary size="large" :render-icon="renderIcon" @click="handleAdd">
