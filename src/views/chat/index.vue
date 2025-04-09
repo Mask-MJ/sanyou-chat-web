@@ -45,6 +45,7 @@ const prompt = ref<string>('')
 const loading = ref<boolean>(false)
 const inputRef = ref<Ref | null>(null)
 const hasUpload = ref<boolean>(false)
+const fileName = ref<string>('')
 
 // 添加PromptStore
 const promptStore = usePromptStore()
@@ -97,6 +98,7 @@ const handleBeforeUpload = (data: { file: UploadFileInfo; fileList: UploadFileIn
 
   loading.value = true
   // chatStore.setUploadStatus(true)
+	fileName.value = data.file.file?.name || ''
   return true
 }
 const handleUploadFinish = (e: any) => {
@@ -654,6 +656,7 @@ onUnmounted(() => {
       </div>
     </main>
     <footer :class="footerClass">
+			<div v-if="['3', '4', '5'].includes(menuValue)" class="mx-20 my-2">当前文件：{{ fileName }}</div>
       <div class=" m-auto mx-20 min-h-28 rounded-3xl bg-gray-100">
         <div class="flex items-center justify-between space-x-2">
           <!-- <HoverButton v-if="!isMobile" @click="handleClear">
