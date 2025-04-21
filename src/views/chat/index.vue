@@ -294,6 +294,48 @@ async function onConversation() {
         await fetchChatAPIProcess3<Chat.ConversationResponse>(params)
       }
 
+			if (menuValue.value === '6') {
+				params = {
+          ...params,
+          onDownloadProgress: ({ event }: AxiosProgressEvent) => {
+            const xhr = event.target
+            const { responseText } = xhr
+            try {
+              const data = JSON.parse(JSON.parse(responseText))
+							console.log('data', data)
+              updateChat(
+                +uuid,
+                dataSources.value.length - 1,
+                {
+                  dateTime: new Date().toLocaleString(),
+                  text: data.choices[0].message.content || '',
+                  inversion: false,
+                  error: false,
+                  loading: true,
+                  conversationOptions: { conversationId: data.conversationId, parentMessageId: data.id },
+                  requestOptions: { prompt: message, options: { ...options } },
+                },
+              )
+
+              if (openLongReply && data.detail.choices[0].finish_reason === 'length') {
+                options.parentMessageId = data.id
+                lastText = data.text
+                message = ''
+                return fetchChatAPIOnce()
+              }
+
+              scrollToBottomIfAtBottom()
+            }
+            catch (error) {
+            //
+            }
+          },
+        }
+				await fetchChatAPIProcess2<Chat.ConversationResponse>(params).catch((error) => {
+					console.log('error', error)
+				})
+			}
+
       updateChatSome(+uuid, dataSources.value.length - 1, { loading: false })
     }
 
@@ -587,6 +629,28 @@ const buttonDisabled = computed(() => {
   }
 })
 
+const buttonDisabled2 = computed(() => {
+ return menuValue.value === '3'
+})
+
+const buttonDisabled3 = ref(false)
+
+const buttonActive = ref(false)
+
+const handleActive = ()=>{
+	buttonActive.value = !buttonActive.value
+	if (buttonActive.value) {
+		userStore.setActiveMenu('6')
+		window.$message?.success('关联知识库成功')
+		buttonDisabled3.value = true
+	}
+	else {
+		userStore.setActiveMenu('1')
+		window.$message?.error('取消关联知识库')
+		buttonDisabled3.value = false
+	}
+}
+
 const footerClass = computed(() => {
   let classes = ['p-4']
   if (isMobile.value)
@@ -690,6 +754,17 @@ onUnmounted(() => {
               />
             </template>
           </NAutoComplete>
+					<NPopover trigger="hover">
+            <template #trigger>
+              <NButton class="!absolute bottom-8 left-28" :type="buttonActive ? 'primary': 'default' "  :disabled="buttonDisabled2" @click="handleActive">
+								<!-- <template #icon>
+									<SvgIcon icon="ri:question-line" />
+								</template> -->
+								关联知识库
+              </NButton>
+            </template>
+            <span>请输入你的问题</span>
+          </NPopover>
           <NPopover trigger="hover">
             <template #trigger>
               <NButton class="!absolute bottom-8 right-28" type="primary" circle :disabled="buttonDisabled" @click="handleSubmit">
@@ -713,6 +788,7 @@ onUnmounted(() => {
             <NButton
               type="primary" :loading="loading"
               circle
+							:disabled="buttonDisabled3"
             >
               <template #icon>
                 <UploadOutlined />
